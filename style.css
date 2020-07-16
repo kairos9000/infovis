@@ -21,7 +21,8 @@ path:hover {
 }
 
 #legende {
-    width: 50%;
+    width: 95%;
+    max-width: 600px;
     height: 40px;
     text-align: center;
     margin: 20px auto;
