@@ -1,3 +1,7 @@
+body {
+    font-family: Verdana, Arial, sans-serif;
+}
+
 #slidercontainer {
     text-align: center;
 }
@@ -35,4 +39,24 @@ rect:hover {
 text {
     opacity: 1;
     display: inline;
+}
+
+#land-details {
+    display: none;
+    position: absolute;
+    transform: translate(-50%, 0);
+    pointer-events: none;
+    color: white;
+    text-shadow: 0 0 16px black;
+    background-color: rgba(0, 0, 0, 0.5);
+    border: solid black 1px;
+    padding: 16px;
+}
+
+#land-details-name {
+    font-size: 1.3em;
+}
+
+#land-details.visible {
+    display: block;
 }

@@ -1,21 +1,25 @@
-var slider = "31.12.2019";
-var globData;
+let slider = "31.12.2019";
+let globData;
 let file = "corona_dataset.csv";
-var isocodes = new Array(250);
-var totalcases_max = 0;
-var totalcases_min = Number.MAX_VALUE;
+let isocodes = new Array(250);
+let totalcases_max = 0;
+let totalcases_min = Number.MAX_VALUE;
+
+let elementLandDetails = document.getElementById("land-details");
+let elementLandDetailsName = document.getElementById("land-details-name");
+let elementLandDetailsTotalCases = document.getElementById("land-details-total-cases");
 
 d3.csv(file).then(function (data) {
     globData = data;
-    for (var i = 0; i < data.length; i++) {
-        var total = Number.parseInt(data[i].totalcases);
+    for (let i = 0; i < data.length; i++) {
+        let total = Number.parseInt(data[i].totalcases);
 
         if (total < totalcases_min) totalcases_min = total;
         if (total > totalcases_max) totalcases_max = total;
     }
 
-    var farbe = 35;
-    var saturation = 90;
+    let farbe = 35;
+    let saturation = 90;
 
     d3.select("#legende")
         .append("rect")
@@ -44,9 +48,9 @@ d3.csv(file).then(function (data) {
             "stroke:rgb(0,0,0);stroke-width:1;stroke-opacity:0;fill:hsl(30,100%,100%);"
         )
         .attr("id", "1rect");
-    var legendenlabels = 1;
-    var labelscounter = 0;
-    for (var i = 2; i < 10; i++) {
+    let legendenlabels = 1;
+    let labelscounter = 0;
+    for (let i = 2; i < 10; i++) {
         d3.select("#legende")
             .append("rect")
             .attr("width", "10%")
@@ -89,11 +93,12 @@ d3.csv(file).then(function (data) {
             .getElementById(this.id)
             .addEventListener("mouseout", legendenhoveraus);
     });
-    var counter = 0;
+    let counter = 0;
     d3.selectAll("path").each(function (d, i) {
-        document
-            .getElementById(this.id)
-            .addEventListener("click", landfunktion);
+        let pathElement = document.getElementById(this.id);
+        
+        pathElement.addEventListener("mouseenter", landMouseIn);
+        pathElement.addEventListener("mouseleave", landMouseOut);
 
         isocodes[counter] = this.id;
         counter++;
@@ -110,19 +115,36 @@ function legendenhoveraus() {
     document.getElementById(this.id).style.strokeWidth = "2";
 }
 
-function landfunktion() {
-    document.getElementById(this.id).style.fill = "hsl(0,100%,50%)";
+function landMouseIn(event) {
+    let targetElement = event.target;
+    let bounds = targetElement.getBoundingClientRect();
+
+    let x = bounds.left + bounds.width / 2;
+    let y = bounds.top + bounds.height;
+
+    elementLandDetails.style.left = x;
+    elementLandDetails.style.top = y;
+    elementLandDetails.classList.add("visible");
+
+    elementLandDetailsName.innerText = targetElement.getAttribute("data-name");
+
+    let totalCases = Math.floor(Math.random() * 10000 + 10000);
+    elementLandDetailsTotalCases.innerText = "Gesamte Infizierte: "+totalCases.toLocaleString();
+}
+
+function landMouseOut() {
+    elementLandDetails.classList.remove("visible");
 }
 
 function update() {
-    for (var i = 0; i < isocodes.length; i++) {
+    for (let i = 0; i < isocodes.length; i++) {
         if (document.getElementById(isocodes[i]) != null)
             document.getElementById(isocodes[i]).style.fill = "#f2f2f2";
     }
-    for (var i = 0; i < globData.length; i++) {
+    for (let i = 0; i < globData.length; i++) {
         if (slider == globData[i].date) {
             if (globData[i].isocode != "OWID_WRL") {
-                var anzahl = Number.parseInt(globData[i].totalcases);
+                let anzahl = Number.parseInt(globData[i].totalcases);
 
                 if (anzahl == 0) {
                     document.getElementById(globData[i].isocode).style.fill =
@@ -161,7 +183,7 @@ function setSlider() {
     if (slider == 0) slider = "31.12.2019";
     if (slider == 183) slider = "01.07.2020";
     if (slider == 184) slider = "02.07.2020";
-    for (var i = 1; i <= 182; i++) {
+    for (let i = 1; i <= 182; i++) {
         if (i <= 31) {
             if (slider == i) {
                 i = auffüllen(i);
