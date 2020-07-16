@@ -4,10 +4,12 @@ let file = "corona_dataset.csv";
 let isocodes = new Array(250);
 let totalcases_max = 0;
 let totalcases_min = Number.MAX_VALUE;
-
+let rectsArray = new Array(10);
 let elementLandDetails = document.getElementById("land-details");
 let elementLandDetailsName = document.getElementById("land-details-name");
-let elementLandDetailsTotalCases = document.getElementById("land-details-total-cases");
+let elementLandDetailsTotalCases = document.getElementById(
+    "land-details-total-cases"
+);
 
 d3.csv(file).then(function (data) {
     globData = data;
@@ -18,8 +20,8 @@ d3.csv(file).then(function (data) {
         if (total > totalcases_max) totalcases_max = total;
     }
 
-    let farbe = 35;
-    let saturation = 90;
+    let farbe = 30;
+    let saturation = 85;
 
     d3.select("#legende")
         .append("rect")
@@ -67,13 +69,15 @@ d3.csv(file).then(function (data) {
             )
             .attr("id", i + "rect");
 
+        let label = legendenlabels * labelscounter;
+
         d3.select("#legende")
             .append("text")
             .attr("x", i * 10 + "%")
             .attr("y", "15px")
             .attr("text-anchor", "middle")
             .text(function (d) {
-                return legendenlabels * labelscounter;
+                return label.toLocaleString();
             });
 
         farbe -= 5;
@@ -92,18 +96,19 @@ d3.csv(file).then(function (data) {
         document
             .getElementById(this.id)
             .addEventListener("mouseout", legendenhoveraus);
+
+        rectsArray[i] = this.id;
     });
     let counter = 0;
     d3.selectAll("path").each(function (d, i) {
         let pathElement = document.getElementById(this.id);
-        
+
         pathElement.addEventListener("mouseenter", landMouseIn);
         pathElement.addEventListener("mouseleave", landMouseOut);
 
         isocodes[counter] = this.id;
         counter++;
     });
-    console.log(isocodes);
     setSlider();
 });
 
@@ -116,6 +121,16 @@ function legendenhoveraus() {
 }
 
 function landMouseIn(event) {
+    var totalCases = "Keine Daten";
+    for (let i = 0; i < globData.length; i++) {
+        if (slider == globData[i].date) {
+            if (globData[i].isocode != "OWID_WRL") {
+                if (globData[i].isocode == this.id) {
+                    totalCases = Number.parseInt(globData[i].totalcases);
+                }
+            }
+        }
+    }
     let targetElement = event.target;
     let bounds = targetElement.getBoundingClientRect();
 
@@ -128,8 +143,10 @@ function landMouseIn(event) {
 
     elementLandDetailsName.innerText = targetElement.getAttribute("data-name");
 
-    let totalCases = Math.floor(Math.random() * 10000 + 10000);
-    elementLandDetailsTotalCases.innerText = "Gesamte Infizierte: "+totalCases.toLocaleString();
+    elementLandDetailsTotalCases.innerText =
+        "Gesamte Infizierte: " + totalCases.toLocaleString();
+
+    //console.log(document.getElementById(this.id).getAttribute("style"));
 }
 
 function landMouseOut() {
@@ -146,13 +163,10 @@ function update() {
             if (globData[i].isocode != "OWID_WRL") {
                 let anzahl = Number.parseInt(globData[i].totalcases);
 
-                if (anzahl == 0) {
-                    document.getElementById(globData[i].isocode).style.fill =
-                        "hsl(35,100%,90%)";
-                } else if (anzahl > 0 && anzahl <= 10) {
+                if (anzahl >= 0 && anzahl <= 10) {
                     document.getElementById(globData[i].isocode).style.fill =
                         "hsl(30,100%,85%)";
-                } else if (anzahl > 1 && anzahl <= 100) {
+                } else if (anzahl > 10 && anzahl <= 100) {
                     document.getElementById(globData[i].isocode).style.fill =
                         "hsl(25,100%,80%)";
                 } else if (anzahl > 100 && anzahl <= 1000) {
@@ -242,4 +256,29 @@ function map(n, start1, stop1, start2, stop2) {
     const newval =
         ((n - start1) / (stop1 - start1)) * (stop2 - start2) + start2;
     return newval;
+}
+
+function hslToRgb(h, s, l) {
+    var r, g, b;
+
+    if (s == 0) {
+        r = g = b = l; // achromatic
+    } else {
+        var hue2rgb = function hue2rgb(p, q, t) {
+            if (t < 0) t += 1;
+            if (t > 1) t -= 1;
+            if (t < 1 / 6) return p + (q - p) * 6 * t;
+            if (t < 1 / 2) return q;
+            if (t < 2 / 3) return p + (q - p) * (2 / 3 - t) * 6;
+            return p;
+        };
+
+        var q = l < 0.5 ? l * (1 + s) : l + s - l * s;
+        var p = 2 * l - q;
+        r = hue2rgb(p, q, h + 1 / 3);
+        g = hue2rgb(p, q, h);
+        b = hue2rgb(p, q, h - 1 / 3);
+    }
+
+    return [Math.round(r * 255), Math.round(g * 255), Math.round(b * 255)];
 }
