@@ -1798,9 +1798,7 @@
             />
         </svg>
 
-        <svg id="legende">
-            <text x="0" y="15">Keine Daten</text>
-        </svg>
+        <svg id="legende"></svg>
         <div id="slidercontainer">
             <input
                 type="range"
@@ -1815,6 +1813,90 @@
         <div id="land-details">
             <span id="land-details-name"></span>
             <p id="land-details-total-cases">PLATZHALTER</p>
+        </div>
+        <div id="auswahldiv">
+            <p id="auswahldivtitel">Datensätze</p>
+            <span>
+                <input
+                    type="radio"
+                    id="tc"
+                    name="datensatz"
+                    value="total_cases"
+                    checked="checked"
+                    onclick="datensatzfunktion()"
+                />
+                <label for="tc"> total cases</label>
+            </span>
+            <span>
+                <input
+                    type="radio"
+                    id="nc"
+                    name="datensatz"
+                    value="new_cases"
+                    onclick="datensatzfunktion()"
+                />
+                <label for="nc"> new cases</label>
+            </span>
+            <span>
+                <input
+                    type="radio"
+                    id="td"
+                    name="datensatz"
+                    value="total_deaths"
+                    onclick="datensatzfunktion()"
+                />
+                <label for="td"> total deaths</label>
+            </span>
+            <span>
+                <input
+                    type="radio"
+                    id="nd"
+                    name="datensatz"
+                    value="new_deaths"
+                    onclick="datensatzfunktion()"
+                />
+                <label for="nd"> new deaths</label>
+            </span>
+            <span>
+                <input
+                    type="radio"
+                    id="tcpm"
+                    name="datensatz"
+                    value="total_cases_per_million"
+                    onclick="datensatzfunktion()"
+                />
+                <label for="tcpm"> total cases per million</label>
+            </span>
+            <span>
+                <input
+                    type="radio"
+                    id="ncpm"
+                    name="datensatz"
+                    value="new_cases_per_million"
+                    onclick="datensatzfunktion()"
+                />
+                <label for="ncpm"> new cases per million</label>
+            </span>
+            <span>
+                <input
+                    type="radio"
+                    id="tdpm"
+                    name="datensatz"
+                    value="total_deaths_per_million"
+                    onclick="datensatzfunktion()"
+                />
+                <label for="tdpm"> total deaths per million</label>
+            </span>
+            <span>
+                <input
+                    type="radio"
+                    id="ndpm"
+                    name="datensatz"
+                    value="new_deaths_per_million"
+                    onclick="datensatzfunktion()"
+                />
+                <label for="ndpm"> new deaths per million</label>
+            </span>
         </div>
         <script type="text/javascript" src="d3/d3.js" defer></script>
         <script type="text/javascript" src="d3/script.js" defer></script>

@@ -38,6 +38,7 @@ text {
 }
 
 #land-details {
+    font-family: Verdana, Arial, sans-serif;
     display: none;
     position: absolute;
     transform: translate(-50%, 0);
@@ -55,4 +56,28 @@ text {
 
 #land-details.visible {
     display: block;
+}
+
+#auswahldiv {
+    text-align: left;
+    position: absolute;
+    left: 0;
+    top: 0px;
+    margin: 50px 20px;
+    padding: 10px;
+    box-shadow: 0 0 8px black;
+    border-radius: 10px;
+}
+
+#auswahldiv > span {
+    white-space: nowrap;
+    display: block;
+    margin: 5px 10px;
+    font-size: 0.8em;
+}
+
+#auswahldivtitel {
+    font-size: 1.2em;
+    text-align: center;
+    font-weight: bold;
 }

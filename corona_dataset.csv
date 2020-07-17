@@ -1,4 +1,4 @@
-,isocode,continent,location,date,totalcases,newcases,total_deaths,new_deaths,total_cases_per_million,new_cases_per_million,total_deaths_per_million,new_deaths_per_million,population_density
+,iso_code,continent,location,date,total_cases,new_cases,total_deaths,new_deaths,total_cases_per_million,new_cases_per_million,total_deaths_per_million,new_deaths_per_million,population_density
 0,AFG,Asia,Afghanistan,31.12.2019,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,54.422
 1,AFG,Asia,Afghanistan,01.01.2020,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,54.422
 2,AFG,Asia,Afghanistan,02.01.2020,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,54.422
