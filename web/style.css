@@ -1,47 +1,57 @@
+/*Slider wird zentriert*/
 #slidercontainer {
     text-align: center;
 }
 
+/*Slide hat 50% der Breite des Bildschirms*/
 #slider {
     width: 50%;
 }
 
+/*Weltkarte bekommt margins und maximale Breite, damit sie selbst bei
+kleineren Bildschirmen angezeit wird*/
 #svg2 {
     margin: 20px 20px;
     max-width: 90%;
 }
 
+/*alles im body wird zentriert*/
 body {
     text-align: center;
 }
 
+/*wenn über ein Land gehovert wird, wird die outline des Landes breiter*/
 path:hover {
     stroke-width: 3;
     cursor: pointer;
 }
 
+/*Legende hat 800px Breite des Bildschirms, nimmt aber bei Bildschirmen die weniger als
+800px breit sind nur 95% der Breite ein*/
 #legende {
     width: 95%;
     max-width: 800px;
     height: 40px;
     text-align: center;
+    /*legende wird zentriert*/
     margin: 20px auto;
 }
 
-rect:hover {
-    stroke-width: 5px;
-}
-
+/*alle text Elemente der Legende werden nebeneinander positioniert*/
 text {
-    opacity: 1;
     display: inline;
 }
 
 #land-details {
+    /*Box mit Details zu den Ländern hat andere Schriftart*/
     font-family: Verdana, Arial, sans-serif;
+    /*wird standardmäßig nicht angezeigt*/
     display: none;
+    /*Positionierung auf dem Bildschirm*/
     position: absolute;
     transform: translate(-50%, 0);
+    /*kann nicht angeklickt werden und Mauszeiger wird nicht verändert
+    beim Hovern*/
     pointer-events: none;
     color: white;
     text-shadow: 0 0 16px black;
@@ -50,14 +60,17 @@ text {
     padding: 16px;
 }
 
+/*Name des Landes ist größer als der Rest*/
 #land-details-name {
     font-size: 1.3em;
 }
 
+/*wird als Block Element gezeigt, wenn es angezeigt werden soll*/
 #land-details.visible {
     display: block;
 }
 
+/*Container mit Radio Buttons*/
 #auswahldiv {
     text-align: left;
     position: absolute;
@@ -69,6 +82,8 @@ text {
     border-radius: 10px;
 }
 
+/*Die einzelnen Buttons werden untereinander angezeigt,
+um den Container nicht zu breit zu machen*/
 #auswahldiv > span {
     white-space: nowrap;
     display: block;
@@ -76,6 +91,8 @@ text {
     font-size: 0.8em;
 }
 
+/*Titel des Containers "Datensätze" wird größer und fett
+angezeigt*/
 #auswahldivtitel {
     font-size: 1.2em;
     text-align: center;

@@ -1,13 +1,14 @@
 <html>
     <head>
-        <!--Charset damit Emojis zur Verfügung stehen-->
+        <!--Charset-->
         <meta charset="UTF-8" />
-        <!--CSS Datei-->
+        <!--Einbinden der CSS Datei-->
         <link href="style.css" rel="stylesheet" type="text/css" />
         <!--Anpassen der Breite an Gerät Breite-->
         <meta name="viewport" content="width=device-width, initial-scale=1" />
     </head>
     <body>
+        <!--Weltkarte als svg mit ISO Codes für Zuweisung über das Dataset-->
         <!--
         *************Map created by Simplemaps.com********************		
         *************Attribution is highly appreciated!***************
@@ -1798,7 +1799,9 @@
             />
         </svg>
 
+        <!--Legende die durch d3.js dynamisch mit rect und text befüllt wird, je nach Datensatz-->
         <svg id="legende"></svg>
+        <!--Container für Slider, um das Datum zu verändern-->
         <div id="slidercontainer">
             <input
                 type="range"
@@ -1810,13 +1813,16 @@
             />
             <p id="slidervalue">31.12.2019</p>
         </div>
+        <!--Container für Details über die Länder; erscheint wenn über das entsprechende Land gehovert wird-->
         <div id="land-details">
             <span id="land-details-name"></span>
             <p id="land-details-total-cases">PLATZHALTER</p>
         </div>
+        <!--Container der die Radio Buttons enthält, mit denen man die einzelnen Datensätze(Spalten) des Datasets auswählen kann-->
         <div id="auswahldiv">
             <p id="auswahldivtitel">Datensätze</p>
             <span>
+                <!--Jeder Button führt bei Anklicken die datensatzfunktion() aus-->
                 <input
                     type="radio"
                     id="tc"
@@ -1825,7 +1831,7 @@
                     checked="checked"
                     onclick="datensatzfunktion()"
                 />
-                <label for="tc"> total cases</label>
+                <label for="tc">Gesamt Infizierte</label>
             </span>
             <span>
                 <input
@@ -1835,7 +1841,7 @@
                     value="new_cases"
                     onclick="datensatzfunktion()"
                 />
-                <label for="nc"> new cases</label>
+                <label for="nc">Neu Infizierte pro Tag</label>
             </span>
             <span>
                 <input
@@ -1845,7 +1851,7 @@
                     value="total_deaths"
                     onclick="datensatzfunktion()"
                 />
-                <label for="td"> total deaths</label>
+                <label for="td">Gesamte Todesfälle</label>
             </span>
             <span>
                 <input
@@ -1855,7 +1861,7 @@
                     value="new_deaths"
                     onclick="datensatzfunktion()"
                 />
-                <label for="nd"> new deaths</label>
+                <label for="nd">Neue Todesfälle pro Tag</label>
             </span>
             <span>
                 <input
@@ -1865,7 +1871,9 @@
                     value="total_cases_per_million"
                     onclick="datensatzfunktion()"
                 />
-                <label for="tcpm"> total cases per million</label>
+                <label for="tcpm"
+                    >Gesamt Infizierte pro Millionen Menschen</label
+                >
             </span>
             <span>
                 <input
@@ -1875,7 +1883,9 @@
                     value="new_cases_per_million"
                     onclick="datensatzfunktion()"
                 />
-                <label for="ncpm"> new cases per million</label>
+                <label for="ncpm"
+                    >Neu Infizierte pro Tag pro Millionen Menschen</label
+                >
             </span>
             <span>
                 <input
@@ -1885,7 +1895,9 @@
                     value="total_deaths_per_million"
                     onclick="datensatzfunktion()"
                 />
-                <label for="tdpm"> total deaths per million</label>
+                <label for="tdpm"
+                    >Gesamte Todesfälle pro Millionen Menschen</label
+                >
             </span>
             <span>
                 <input
@@ -1895,11 +1907,14 @@
                     value="new_deaths_per_million"
                     onclick="datensatzfunktion()"
                 />
-                <label for="ndpm"> new deaths per million</label>
+                <label for="ndpm"
+                    >Neue Todesfälle pro Tag pro Millionen Menschen</label
+                >
             </span>
         </div>
-        <script type="text/javascript" src="d3/d3.js" defer></script>
-        <script type="text/javascript" src="d3/script.js" defer></script>
+        <!--Einbinden der js Dateien-->
+        <script type="text/javascript" src="js/d3.js" defer></script>
+        <script type="text/javascript" src="js/script.js" defer></script>
         <noscript>
             Sorry, your Browser does not support JavaScript!
         </noscript>
