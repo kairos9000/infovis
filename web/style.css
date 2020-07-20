@@ -98,3 +98,7 @@ angezeigt*/
     text-align: center;
     font-weight: bold;
 }
+
+#legende rect:hover {
+    stroke-width: 3;
+}

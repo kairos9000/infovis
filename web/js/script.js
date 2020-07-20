@@ -152,7 +152,7 @@ function datensatzfunktion() {
             .attr("width", "10%")
             .attr("height", "20")
             .attr("y", "20px")
-            .attr("style", "stroke:rgb(0,0,0);stroke-width:2;fill:#f2f2f2;")
+            .attr("style", "stroke:rgb(0,0,0);fill:#f2f2f2;")
             .attr("id", "0rect");
 
         //Erstes rect bekommt Text "Keine Daten"
@@ -174,7 +174,7 @@ function datensatzfunktion() {
             .attr("y", "20px")
             .attr(
                 "style",
-                "stroke:rgb(0,0,0);stroke-width:1;stroke-opacity:0;fill:hsl(30,100%,100%);"
+                "stroke:rgb(0,0,0);stroke-opacity:0;fill:hsl(30,100%,100%);"
             )
             .attr("id", "1rect");
 
@@ -188,7 +188,7 @@ function datensatzfunktion() {
                 .attr("y", "20px")
                 .attr(
                     "style",
-                    "stroke:rgb(0,0,0);stroke-width:2;fill:hsl(" +
+                    "stroke:rgb(0,0,0);fill:hsl(" +
                         farbe +
                         ",100%," +
                         saturation +
@@ -258,8 +258,6 @@ function datensatzfunktion() {
 function legendenhover() {
     //Damit die opacity jedes Landes nur einmal auf 0.5 gesetzt wird
     let opacityRunterdrehen = true;
-    //Breite des Randes der rects wird auf 3 gesetzt
-    document.getElementById(this.id).style.strokeWidth = "3";
     //intervall speichert das Datum aus dem Dataset, welches gerade gebraucht wird
     var intervall;
     //beim "whitespace" der Legende passiert nichts
@@ -406,9 +404,8 @@ function legendenhover() {
 }
 
 //wenn der Mauszeiger aus dem jeweiligen rect raus ist, wird alles
-//wieder aus Standard zurückgestellt
+//wieder auf Standard zurückgestellt
 function legendenhoveraus() {
-    document.getElementById(this.id).style.strokeWidth = "2";
     for (let i = 0; i < isocodes.length; i++) {
         if (document.getElementById(isocodes[i]) != null) {
             document.getElementById(isocodes[i]).style.opacity = 1;
@@ -612,48 +609,36 @@ function setSlider() {
     if (sliderDatum == 0) sliderDatum = "31.12.2019";
     if (sliderDatum == 183) sliderDatum = "01.07.2020";
     if (sliderDatum == 184) sliderDatum = "02.07.2020";
-    for (let i = 1; i <= 182; i++) {
-        if (i <= 31) {
-            if (sliderDatum == i) {
-                i = auffüllen(i);
-                sliderDatum = i + ".01.2020";
-            }
-        }
-        if (i > 31 && i <= 60) {
-            if (sliderDatum == i) {
-                i = auffüllen(i - 31);
-                sliderDatum = i + ".02.2020";
-            }
-        }
 
-        if (i > 60 && i <= 91) {
-            if (sliderDatum == i) {
-                i = auffüllen(i - 60);
-                sliderDatum = i + ".03.2020";
-            }
-        }
-
-        if (i > 91 && i <= 121) {
-            if (sliderDatum == i) {
-                i = auffüllen(i - 91);
-                sliderDatum = i + ".04.2020";
-            }
-        }
-
-        if (i > 121 && i <= 152) {
-            if (sliderDatum == i) {
-                i = auffüllen(i - 121);
-                sliderDatum = i + ".05.2020";
-            }
-        }
-
-        if (i > 152 && i <= 182) {
-            if (sliderDatum == i) {
-                i = auffüllen(i - 152);
-                sliderDatum = i + ".06.2020";
-            }
-        }
+    if (sliderDatum <= 31) {
+        sliderDatum = auffüllen(sliderDatum);
+        sliderDatum += ".01.2020";
     }
+    if (sliderDatum > 31 && sliderDatum <= 60) {
+        sliderDatum = auffüllen(sliderDatum - 31);
+        sliderDatum += ".02.2020";
+    }
+
+    if (sliderDatum > 60 && sliderDatum <= 91) {
+        sliderDatum = auffüllen(sliderDatum - 60);
+        sliderDatum += ".03.2020";
+    }
+
+    if (sliderDatum > 91 && sliderDatum <= 121) {
+        sliderDatum = auffüllen(sliderDatum - 91);
+        sliderDatum += ".04.2020";
+    }
+
+    if (sliderDatum > 121 && sliderDatum <= 152) {
+        sliderDatum = auffüllen(sliderDatum - 121);
+        sliderDatum += ".05.2020";
+    }
+
+    if (sliderDatum > 152 && sliderDatum <= 182) {
+        sliderDatum = auffüllen(sliderDatum - 152);
+        sliderDatum += ".06.2020";
+    }
+
     //der Inhalt des Paragraphen unter dem slider ist sliderDatum
     output.innerHTML = sliderDatum;
     //Länder Farben werden mit neuem sliderDatum geupdatet
