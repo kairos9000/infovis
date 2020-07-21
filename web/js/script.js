@@ -4,7 +4,7 @@ let sliderDatum = "31.12.2019";
 //in globData gespeichert, um es im weiteren Verlauf zur Verfügung zu haben
 let globData;
 //Dataset
-let file = "../data/corona_dataset.csv";
+let file = "data/corona_dataset.csv";
 //ISO Codes der Länder der svg Datei werden in diesem Array gespeichert
 let isocodes = new Array(250);
 //Berechnen der jeweiligen Minima und Maxima der einzelnen Spalten des Datasets
@@ -24,8 +24,6 @@ let totaldeaths_permillion_max = 0;
 let totaldeaths_permillion_min = Number.MAX_VALUE;
 let newdeaths_permillion_max = 0;
 let newdeaths_permillion_min = Number.MAX_VALUE;
-//Damit Minima und Maxima nur einmal berechnet werden
-let MinMaxBerechnet = false;
 //Damit der Land-Details Container verändert werden kann
 let elementLandDetails = document.getElementById("land-details");
 let elementLandDetailsName = document.getElementById("land-details-name");
@@ -51,95 +49,28 @@ let legendenarray = new Array(8);
 let ausgwSpalte;
 
 //Funktion wird einmal ausgeführt, um die Daten zuzuordnen => Default ist total_cases
-datensatzfunktion();
-
-//Funktion, die die Legende erstellt, mit Labels versieht und die
-//d3 Einbindung enthält
-function datensatzfunktion() {
-    //Überprüfung, welcher Radio Button ausgewählt wurde
-    if (document.getElementById("tc").checked) {
-        //Zuweisung der jeweiligen Attribute, damit nicht jede Legende gleich aussieht
-        farbe = 35;
-        //Skalierung anhand der min und max Werte der jeweiligen Spalte => function MinMaxBerechnen()
-        legendenskalierung = 300000;
-        legendenlabels = 0;
-        labelscounter = 1;
-        ausgwSpalte = "total_cases";
-    }
-
-    if (document.getElementById("nc").checked) {
-        farbe = 180;
-        legendenskalierung = 7000;
-        legendenlabels = -3000;
-        labelscounter = 1;
-        ausgwSpalte = "new_cases";
-    }
-
-    if (document.getElementById("td").checked) {
-        farbe = 60;
-        legendenskalierung = 5000;
-        legendenlabels = 0;
-        labelscounter = 1;
-        ausgwSpalte = "total_deaths";
-    }
-
-    if (document.getElementById("nd").checked) {
-        farbe = 300;
-        legendenskalierung = 800;
-        legendenlabels = -2000;
-        labelscounter = 1;
-        ausgwSpalte = "new_deaths";
-    }
-
-    if (document.getElementById("tcpm").checked) {
-        farbe = 35;
-        legendenskalierung = 2000;
-        legendenlabels = 0;
-        labelscounter = 1;
-        ausgwSpalte = "total_cases_per_million";
-    }
-
-    if (document.getElementById("ncpm").checked) {
-        farbe = 180;
-        legendenskalierung = 100;
-        legendenlabels = -200;
-        labelscounter = 1;
-        ausgwSpalte = "new_cases_per_million";
-    }
-
-    if (document.getElementById("tdpm").checked) {
-        farbe = 60;
-        legendenskalierung = 100;
-        legendenlabels = 0;
-        labelscounter = 1;
-        ausgwSpalte = "total_deaths_per_million";
-    }
-
-    if (document.getElementById("ndpm").checked) {
-        farbe = 300;
-        legendenskalierung = 17;
-        legendenlabels = -50;
-        labelscounter = 1;
-        ausgwSpalte = "new_deaths_per_million";
-    }
-
+DefaultWerteEinstellen();
+function DefaultWerteEinstellen() {
+    //Standardwerte der Legende werden ausgewählt für die Spalte "total_cases"
+    farbe = 35;
+    legendenskalierung = 300000;
+    legendenlabels = 0;
+    labelscounter = 1;
+    ausgwSpalte = "total_cases";
     //erstes Label wird gespeichert
     legendenarray[0] = legendenlabels;
     //damit die Sättigung bei mehrmaliger Ausführung der Funktion gleich bleibt
     saturation = 85;
     //Zuweisung für die function update()
     updateFarbe = farbe;
-
     //d3 einbindung des Datasets
     d3.csv(file).then(function (data) {
-        //Zuweisung an die globale Variable
+        //Zuweisung an die globale Variable globData
         globData = data;
 
-        //damit der Min und Max Wert jeder Spalte nur einmal berechnet wird
-        if (MinMaxBerechnet == false) {
-            MinMaxBerechnen();
-            MinMaxBerechnet = true;
-        }
+        //Min und Max Werte jeder Spalte berechnen
+
+        MinMaxBerechnen();
 
         //Legenden von vorherigen Auswahlen werden entfernt,
         //damit die jeweilige Legende angefügt wird
@@ -252,6 +183,181 @@ function datensatzfunktion() {
         //Value des Sliders wird an den Wert von sliderDatum angepasst
         setSlider();
     });
+}
+
+//Funktion, die die Legende erstellt und mit Labels versieht
+function legendenFunktion() {
+    //Überprüfung, welcher Radio Button ausgewählt wurde
+    if (document.getElementById("tc").checked) {
+        //Zuweisung der jeweiligen Attribute, damit nicht jede Legende gleich aussieht
+        farbe = 35;
+        //Skalierung anhand der min und max Werte der jeweiligen Spalte => function MinMaxBerechnen()
+        legendenskalierung = 300000;
+        legendenlabels = 0;
+        labelscounter = 1;
+        ausgwSpalte = "total_cases";
+    }
+
+    if (document.getElementById("nc").checked) {
+        farbe = 180;
+        legendenskalierung = 7000;
+        legendenlabels = -3000;
+        labelscounter = 1;
+        ausgwSpalte = "new_cases";
+    }
+
+    if (document.getElementById("td").checked) {
+        farbe = 60;
+        legendenskalierung = 5000;
+        legendenlabels = 0;
+        labelscounter = 1;
+        ausgwSpalte = "total_deaths";
+    }
+
+    if (document.getElementById("nd").checked) {
+        farbe = 300;
+        legendenskalierung = 800;
+        legendenlabels = -2000;
+        labelscounter = 1;
+        ausgwSpalte = "new_deaths";
+    }
+
+    if (document.getElementById("tcpm").checked) {
+        farbe = 35;
+        legendenskalierung = 2000;
+        legendenlabels = 0;
+        labelscounter = 1;
+        ausgwSpalte = "total_cases_per_million";
+    }
+
+    if (document.getElementById("ncpm").checked) {
+        farbe = 180;
+        legendenskalierung = 100;
+        legendenlabels = -200;
+        labelscounter = 1;
+        ausgwSpalte = "new_cases_per_million";
+    }
+
+    if (document.getElementById("tdpm").checked) {
+        farbe = 60;
+        legendenskalierung = 100;
+        legendenlabels = 0;
+        labelscounter = 1;
+        ausgwSpalte = "total_deaths_per_million";
+    }
+
+    if (document.getElementById("ndpm").checked) {
+        farbe = 300;
+        legendenskalierung = 17;
+        legendenlabels = -50;
+        labelscounter = 1;
+        ausgwSpalte = "new_deaths_per_million";
+    }
+
+    //erstes Label wird gespeichert
+    legendenarray[0] = legendenlabels;
+    //damit die Sättigung bei mehrmaliger Ausführung der Funktion gleich bleibt
+    saturation = 85;
+    //Zuweisung für die function update()
+    updateFarbe = farbe;
+
+    //Legenden von vorherigen Auswahlen werden entfernt,
+    //damit die jeweilige Legende angefügt wird
+    d3.selectAll("text").remove();
+    d3.selectAll("rect").remove();
+
+    //Erstes rect wird angefügt
+    d3.select("#legende")
+        .append("rect")
+        .attr("width", "10%")
+        .attr("height", "20")
+        .attr("y", "20px")
+        .attr("style", "stroke:rgb(0,0,0);fill:#f2f2f2;")
+        .attr("id", "0rect");
+
+    //Erstes rect bekommt Text "Keine Daten"
+    d3.select("#legende")
+        .append("text")
+        .attr("x", "0%")
+        .attr("y", "15px")
+        .text(function (d) {
+            return "Keine Daten";
+        });
+
+    //zweites rect wird angefügt als whitespace zwischen der eigentlichen Legende
+    //und "Keine Daten"
+    d3.select("#legende")
+        .append("rect")
+        .attr("width", "10%")
+        .attr("height", "20")
+        .attr("x", "10%")
+        .attr("y", "20px")
+        .attr(
+            "style",
+            "stroke:rgb(0,0,0);stroke-opacity:0;fill:hsl(30,100%,100%);"
+        )
+        .attr("id", "1rect");
+
+    //acht weitere rects werden angefügt, jeweils nebeneinander
+    for (let i = 2; i < 10; i++) {
+        d3.select("#legende")
+            .append("rect")
+            .attr("width", "10%")
+            .attr("height", "20")
+            .attr("x", i * 10 + "%")
+            .attr("y", "20px")
+            .attr(
+                "style",
+                "stroke:rgb(0,0,0);fill:hsl(" +
+                    farbe +
+                    ",100%," +
+                    saturation +
+                    "%)"
+            )
+            .attr("id", i + "rect");
+
+        //Text der rects wird über die Skalierung festgelegt
+        d3.select("#legende")
+            .append("text")
+            .attr("x", i * 10 + "%")
+            .attr("y", "15px")
+            .attr("text-anchor", "middle")
+            .text(function (d) {
+                return legendenlabels.toLocaleString();
+            });
+
+        //Farbe und Sättigung wird erniedrigt, damit das nächste rect eine
+        //dunklere Farbe hat => Farbabstufung
+        farbe -= 5;
+        saturation -= 5;
+
+        if (i == 2) {
+            legendenlabels += legendenskalierung;
+            legendenarray[i - 1] = legendenlabels;
+        } else {
+            legendenlabels += legendenskalierung;
+            legendenarray[i - 1] = legendenlabels;
+        }
+    }
+
+    //update Funktion wird aufgerufen die jedem Land seine jeweilige Farbe je nach
+    //Zahl im Dataset, der jeweiligen Spalte und Zeile => Farbe und Sättigung
+    //ist dieselbe wie in der Legende
+    update(legendenarray, updateFarbe, ausgwSpalte);
+
+    //alle rects der Legende werden ausgewählt, und jede bekommt einen Event Listener für Hovern
+    d3.selectAll("rect").each(function (d, i) {
+        document
+            .getElementById(this.id)
+            .addEventListener("mouseover", legendenhover);
+
+        document
+            .getElementById(this.id)
+            .addEventListener("mouseout", legendenhoveraus);
+    });
+
+    //Value des Sliders wird an den Wert von sliderDatum angepasst
+    setSlider();
 }
 
 //Funktion die ausgeführt wird, wenn über die Elemente der Legende gehovert wird
