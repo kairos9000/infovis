@@ -45,22 +45,22 @@ let legendenskalierung;
 let legendenarray = new Array(8);
 //Variable, das die ausgewählte Spalte des Datasets speichert
 let ausgwSpalte;
+var rect_dict = { "2rect": [0, 1, "85%"], "3rect": [1, 2, "80%"], "4rect": [2, 3, "75%"], "5rect": [3, 4, "70%"], "6rect": [4, 5, "65%"], "7rect": [5, 6, "60%"], "8rect": [6, 7, "55%"] };
 
 spalten_dict = {
-    total_cases: ["tc", 35, 300000, 0],
-    new_cases: ["nc", 180, 7000, -3000],
-    total_deaths: ["td", 60, 5000, 0],
-    new_deaths: ["nd", 300, 800, -2000],
-    total_cases_per_million: ["tcpm", 35, 2000, 0],
-    new_cases_per_million: ["ncpm", 180, 100, -200],
-    total_deaths_per_million: ["tdpm", 60, 100, 0],
-    new_deaths_per_million: ["ndpm", 300, 17, -50],
+    total_cases: ["tc", 35, 300000, 0, "Gesamt Infizierte: "],
+    new_cases: ["nc", 180, 7000, -3000, "Neu Infizierte an diesem Tag: "],
+    total_deaths: ["td", 60, 5000, 0, "Gesamte Todesfälle: "],
+    new_deaths: ["nd", 300, 800, -2000, "Neue Todesfälle an diesem Tag: "],
+    total_cases_per_million: ["tcpm", 35, 2000, 0, "Gesamt Infizierte pro Millionen Menschen: "],
+    new_cases_per_million: ["ncpm", 180, 100, -200, "Neu Infizierte an diesem Tag pro Millionen Menschen: "],
+    total_deaths_per_million: ["tdpm", 60, 100, 0, "Gesamte Todesfälle pro Millionen Menschen: "],
+    new_deaths_per_million: ["ndpm", 300, 17, -50, "Neue Todesfälle an diesem Tag pro Millionen Menschen: "],
 };
+
 // Object.keys(spalten_dict).forEach(function (key) {
 //     console.log();
 // });
-
-console.log(Object.keys(spalten_dict)[0]);
 
 //Funktion wird einmal ausgeführt, um die Daten zuzuordnen => Default ist total_cases
 DefaultWerteEinstellen();
@@ -295,23 +295,11 @@ function legendenhover() {
                 if (globData[i].iso_code != "OWID_WRL") {
                     //je nach ausgewählter Spalte wird das gewollte Datum des Datasets in
                     //"intervall" gespeichert
-                    if (ausgwSpalte == "total_cases") {
-                        intervall = Number.parseInt(globData[i].total_cases);
-                    } else if (ausgwSpalte == "new_cases") {
-                        intervall = Number.parseInt(globData[i].new_cases);
-                    } else if (ausgwSpalte == "total_deaths") {
-                        intervall = Number.parseInt(globData[i].total_deaths);
-                    } else if (ausgwSpalte == "new_deaths") {
-                        intervall = Number.parseInt(globData[i].new_deaths);
-                    } else if (ausgwSpalte == "total_cases_per_million") {
-                        intervall = Number.parseInt(globData[i].total_cases_per_million);
-                    } else if (ausgwSpalte == "new_cases_per_million") {
-                        intervall = Number.parseInt(globData[i].new_cases_per_million);
-                    } else if (ausgwSpalte == "total_deaths_per_million") {
-                        intervall = Number.parseInt(globData[i].total_deaths_per_million);
-                    } else if (ausgwSpalte == "new_deaths_per_million") {
-                        intervall = Number.parseInt(globData[i].new_deaths_per_million);
-                    }
+                    let datenzeile = globData[i];
+
+                    Object.keys(datenzeile).forEach(function (key) {
+                        if (key == ausgwSpalte) intervall = Number.parseInt(datenzeile[key]);
+                    });
 
                     //die opacity der Länder, die ein Datum im Dataset an diesem Tag haben
                     //wird verringert über die ISO Codes im Dataset
@@ -332,43 +320,17 @@ function legendenhover() {
                         opacityRunterdrehen = false;
                     }
 
+                    var rect_id = this.id;
                     //Länder die Daten im Bereich des ersten rects haben bekommen opacity = 1;
                     //gleiche Prozedur mit dem Rest
-                    if (this.id == "2rect") {
-                        if (intervall >= legendenarray[0] && intervall <= legendenarray[1]) {
-                            document.getElementById(globData[i].iso_code).style.opacity = 1;
+                    Object.keys(rect_dict).forEach(function (key) {
+                        if (rect_id == key) {
+                            if (intervall >= legendenarray[rect_dict[key][0]] && intervall <= legendenarray[rect_dict[key][1]]) {
+                                document.getElementById(globData[i].iso_code).style.opacity = 1;
+                            }
                         }
-                    }
-                    if (this.id == "3rect") {
-                        if (intervall >= legendenarray[1] && intervall <= legendenarray[2]) {
-                            document.getElementById(globData[i].iso_code).style.opacity = 1;
-                        }
-                    }
-                    if (this.id == "4rect") {
-                        if (intervall >= legendenarray[2] && intervall <= legendenarray[3]) {
-                            document.getElementById(globData[i].iso_code).style.opacity = 1;
-                        }
-                    }
-                    if (this.id == "5rect") {
-                        if (intervall >= legendenarray[3] && intervall <= legendenarray[4]) {
-                            document.getElementById(globData[i].iso_code).style.opacity = 1;
-                        }
-                    }
-                    if (this.id == "6rect") {
-                        if (intervall >= legendenarray[4] && intervall <= legendenarray[5]) {
-                            document.getElementById(globData[i].iso_code).style.opacity = 1;
-                        }
-                    }
-                    if (this.id == "7rect") {
-                        if (intervall >= legendenarray[5] && intervall <= legendenarray[6]) {
-                            document.getElementById(globData[i].iso_code).style.opacity = 1;
-                        }
-                    }
-                    if (this.id == "8rect") {
-                        if (intervall >= legendenarray[6] && intervall <= legendenarray[7]) {
-                            document.getElementById(globData[i].iso_code).style.opacity = 1;
-                        }
-                    }
+                    });
+
                     if (this.id == "9rect") {
                         if (intervall >= legendenarray[7]) {
                             document.getElementById(globData[i].iso_code).style.opacity = 1;
@@ -402,24 +364,11 @@ function landMouseIn(event) {
             if (globData[i].iso_code != "OWID_WRL") {
                 //falls der ISO Code der gefundenen Reihe mit dem des gehoverten Landes übereinstimmt
                 if (globData[i].iso_code == this.id) {
-                    //je nach ausgewählter Spalte wird anderer Text in landDetails gespeichert
-                    if (ausgwSpalte == "total_cases") {
-                        landDetails = "Gesamt Infizierte: " + Number.parseInt(globData[i].total_cases).toLocaleString();
-                    } else if (ausgwSpalte == "new_cases") {
-                        landDetails = "Neu Infizierte an diesem Tag: " + Number.parseInt(globData[i].new_cases).toLocaleString();
-                    } else if (ausgwSpalte == "total_deaths") {
-                        landDetails = "Gesamte Todesfälle: " + Number.parseInt(globData[i].total_deaths).toLocaleString();
-                    } else if (ausgwSpalte == "new_deaths") {
-                        landDetails = "Neue Todesfälle an diesem Tag: " + Number.parseInt(globData[i].new_deaths).toLocaleString();
-                    } else if (ausgwSpalte == "total_cases_per_million") {
-                        landDetails = "Gesamt Infizierte pro Millionen Menschen: " + Number.parseInt(globData[i].total_cases_per_million).toLocaleString();
-                    } else if (ausgwSpalte == "new_cases_per_million") {
-                        landDetails = "Neu Infizierte an diesem Tag pro Millionen Menschen: " + Number.parseInt(globData[i].new_cases_per_million).toLocaleString();
-                    } else if (ausgwSpalte == "total_deaths_per_million") {
-                        landDetails = "Gesamte Todesfälle pro Millionen Menschen: " + Number.parseInt(globData[i].total_deaths_per_million).toLocaleString();
-                    } else if (ausgwSpalte == "new_deaths_per_million") {
-                        landDetails = "Neue Todesfälle an diesem Tag pro Millionen Menschen: " + Number.parseInt(globData[i].new_deaths_per_million).toLocaleString();
-                    }
+                    let datenzeile = globData[i];
+
+                    Object.keys(datenzeile).forEach(function (key) {
+                        if (key == ausgwSpalte) landDetails = spalten_dict[key][4] + Number.parseInt(datenzeile[key]).toLocaleString();
+                    });
                 }
             }
         }
@@ -464,44 +413,24 @@ function update(legendenarray, farbe, spalte) {
             if (globData[i].iso_code != "OWID_WRL") {
                 //je nach ausgewählter Spalte im Datensatz wird das gewollte Datum in
                 //anzahl gespeichert
-                if (spalte == "total_cases") {
-                    var anzahl = Number.parseInt(globData[i].total_cases);
-                } else if (spalte == "new_cases") {
-                    var anzahl = Number.parseInt(globData[i].new_cases);
-                } else if (spalte == "total_deaths") {
-                    var anzahl = Number.parseInt(globData[i].total_deaths);
-                } else if (spalte == "new_deaths") {
-                    var anzahl = Number.parseInt(globData[i].new_deaths);
-                } else if (spalte == "total_cases_per_million") {
-                    var anzahl = Number.parseInt(globData[i].total_cases_per_million);
-                } else if (spalte == "new_cases_per_million") {
-                    var anzahl = Number.parseInt(globData[i].new_cases_per_million);
-                } else if (spalte == "total_deaths_per_million") {
-                    var anzahl = Number.parseInt(globData[i].total_deaths_per_million);
-                } else if (spalte == "new_deaths_per_million") {
-                    var anzahl = Number.parseInt(globData[i].new_deaths_per_million);
-                }
+                let datenzeile = globData[i];
+                var anzahl;
+                Object.keys(datenzeile).forEach(function (key) {
+                    if (spalte == key) {
+                        anzahl = Number.parseInt(datenzeile[key]);
+                    }
+                });
 
                 //je nachdem in welchem Intervall der Legende der Wert von "anzahl" liegt
                 //bekommt das Land, dessen ISO Code in derselben Zeile steht wie anzahl
                 //eine andere Färbung
-                if (anzahl >= legendenarray[0] && anzahl <= legendenarray[1]) {
-                    document.getElementById(globData[i].iso_code).style.fill = "hsl(" + farbe + ",100%,85%)";
-                } else if (anzahl > legendenarray[1] && anzahl <= legendenarray[2]) {
-                    document.getElementById(globData[i].iso_code).style.fill = "hsl(" + (farbe - 5) + ",100%,80%)";
-                } else if (anzahl > legendenarray[2] && anzahl <= legendenarray[3]) {
-                    document.getElementById(globData[i].iso_code).style.fill = "hsl(" + (farbe - 10) + ",100%,75%)";
-                } else if (anzahl > legendenarray[3] && anzahl <= legendenarray[4]) {
-                    document.getElementById(globData[i].iso_code).style.fill = "hsl(" + (farbe - 15) + ",100%,70%)";
-                } else if (anzahl > legendenarray[4] && anzahl <= legendenarray[5]) {
-                    document.getElementById(globData[i].iso_code).style.fill = "hsl(" + (farbe - 20) + ",100%,65%)";
-                } else if (anzahl > legendenarray[5] && anzahl <= legendenarray[6]) {
-                    document.getElementById(globData[i].iso_code).style.fill = "hsl(" + (farbe - 25) + ",100%,60%)";
-                } else if (anzahl > legendenarray[6] && anzahl <= legendenarray[7]) {
-                    document.getElementById(globData[i].iso_code).style.fill = "hsl(" + (farbe - 30) + ",100%,55%)";
-                } else {
-                    document.getElementById(globData[i].iso_code).style.fill = "hsl(" + (farbe - 35) + ",100%,50%)";
-                }
+                Object.keys(rect_dict).forEach(function (key) {
+                    if (anzahl >= legendenarray[rect_dict[key][0]] && anzahl <= legendenarray[rect_dict[key][1]]) {
+                        document.getElementById(globData[i].iso_code).style.fill = "hsl(" + farbe + ",100%," + rect_dict[key][2] + ")";
+                    } else if (anzahl > legendenarray[7]) {
+                        document.getElementById(globData[i].iso_code).style.fill = "hsl(" + (farbe - 35) + ",100%,50%)";
+                    }
+                });
             }
         }
     }
